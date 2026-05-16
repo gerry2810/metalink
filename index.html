@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaLink - Inteligencia Social</title>
+    <style>
+        :root {
+            --bg: #0b111e;
+            --surface: #131c2e;
+            --accent: #00f2fe;
+            --text: #ffffff;
+            --muted: #64748b;
+        }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #1e293b;
+        }
+        h1, h2, h3 { color: var(--text); margin-top: 0; }
+        h1 { font-size: 24px; text-align: center; color: var(--accent); }
+        .choice-btn {
+            display: block;
+            width: 100%;
+            background: #1e293b;
+            color: #fff;
+            border: 1px solid #334155;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .choice-btn:hover, .choice-btn.selected {
+            border-color: var(--accent);
+            background: #1e293b;
+        }
+        .response-box {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid var(--accent);
+            display: none;
+        }
+        .response-box.visible { display: block; }
+        .slider-group { margin-bottom: 15px; }
+        .slider-group label { display: block; font-size: 14px; margin-bottom: 5px; color: var(--muted); }
+        .slider-group input { width: 100%; }
+        .btn-analizar {
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            color: #000;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .avatar-placeholder {
+            width: 80px;
+            height: 150px;
+            background: #1e293b;
+            margin: 0 auto 15px auto;
+            border-radius: 8px;
+            border: 2px dashed var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MetaLink</h1>
+        <p style="text-align:center; color:var(--muted); font-size:14px;">Inteligencia social aplicada al servicio</p>
+
+        <div class="card">
+            <h3>MÓDULO 03: Simulador Operativo</h3>
+            <p style="color:var(--muted); font-size:14px;">Selecciona una acción para interactuar:</p>
+            <button class="choice-btn" onclick="selectChoice(this, 'Hablar rápido y mostrar entusiasmo')">Hablar rápido y mostrar entusiasmo</button>
+            <button class="choice-btn" onclick="selectChoice(this, 'Dar espacio, no interrumpir')">Dar espacio, no interrumpir</button>
+            <button class="choice-btn" onclick="selectChoice(this, 'Hacer una broma ligera para romper el hielo')">Hacer una broma ligera para romper el hielo</button>
+            <button class="choice-btn" onclick="selectChoice(this, 'Preguntar directamente cómo estuvo su día')">Preguntar directamente cómo estuvo su día</button>
+            <button class="choice-btn" onclick="selectChoice(this, 'Reflejar su energía con calma y movimientos suaves')">Reflejar su energía con calma y movimientos suaves</button>
+
+            <div id="aiResponse" class="response-box">
+                <div id="aiText"></div>
+            </div>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h3>MÓDULO 04: Mapa de lenguaje no verbal</h3>
+            <div class="avatar-placeholder"></div>
+            <p style="font-size:14px;">Cuerpo Humano / Simulador Activo</p>
+        </div>
+
+        <div class="card">
+            <h3>MÓDULO 05: Laboratorio de metacomunicación</h3>
+            <div class="slider-group">
+                <label>Velocidad del habla</label>
+                <input type="range" id="sl-velocidad" min="0" max="100" value="50">
+            </div>
+            <div class="slider-group">
+                <label>Nivel de silencio</label>
+                <input type="range" id="sl-silencio" min="0" max="100" value="30">
+            </div>
+            <div class="slider-group">
+                <label>Validación emocional</label>
+                <input type="range" id="sl-validacion" min="0" max="100" value="60">
+            </div>
+            <div class="slider-group">
+                <label>Escucha activa</label>
+                <input type="range" id="sl-escucha" min="0" max="100" value="70">
+            </div>
+            <button class="btn-analizar" onclick="analyzeLab()">Analizar combinación con IA</button>
+
+            <div id="labResult" class="response-box" style="display:block; margin-top:15px; border-color:#4facfe;">
+                Mueve los controles y presiona Analizar para ver el balance neuropsicológico.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectChoice(btn, choice) {
+            document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const resp = document.getElementById('aiResponse');
+            const text = document.getElementById('aiText');
+            resp.classList.add('visible');
+            text.innerHTML = 'Analizando metacomunicación...';
+
+            const respuestas = {
+                'Hablar rápido y mostrar entusiasmo': '1. <strong>Qué transmite:</strong> Energía invasiva.<br/>2. <strong>Efecto emocional:</strong> Presión social, aumentando el deseo de aislamiento del cliente.<br/>3. <strong>Alternativa:</strong> Adoptar un tono de voz bajo y pausado.',
+                'Dar espacio, no interrumpir': '1. <strong>Qué transmite:</strong> Respeto absoluto por el estado introspectivo del comensal.<br/>2. <strong>Efecto emocional:</strong> Disminuye la alerta al no percibir demandas en el entorno.<br/>3. <strong>Acción:</strong> Retirarse a una distancia prudente.',
+                'Hacer una broma ligera para romper el hielo': '1. <strong>Qué transmite:</strong> Desconexión empática o intento forzado.<br/>2. <strong>Efecto emocional:</strong> Intrusión molesta en su espacio mental.<br/>3. <strong>Alternativa:</strong> Mantener una cortesía neutra.',
+                'Preguntar directamente cómo estuvo su día': '1. <strong>Qué transmite:</strong> Demanda de interacción verbal directa.<br/>2. <strong>Efecto emocional:</strong> Mecanismos de defensa ante explicaciones no deseadas.<br/>3. <strong>Alternativa:</strong> Limitarse al protocolo básico con suavidad.',
+                'Reflejar su energía con calma y movimientos suaves': '1. <strong>Qué transmite:</strong> Rapport subcortical puro. Sincronización motriz.<br/>2. <strong>Efecto emocional:</strong> El sistema límbico detecta seguridad y co-regulación.<br/>3. <strong>Acción:</strong> Movimientos fluidos y volumen bajo.'
+            };
+            setTimeout(() => { text.innerHTML = respuestas[choice]; }, 300);
+        }
+
+        function analyzeLab() {
+            const velocidad = document.getElementById('sl-velocidad').value;
+            const silencio = document.getElementById('sl-silencio').value;
+            const result = document.getElementById('labResult');
+            result.innerHTML = 'Analizando combinación neuropsicológica...';
+
+            setTimeout(() => {
+                if (velocidad > 70 && silencio < 30) {
+                    result.innerHTML = '<strong>Resultado:</strong> Alta velocidad y pocos silencios generan sobrecarga. El comensal se mantendrá en alerta, dificultando el rapport. Ajuste recomendado: Incrementa el silencio por encima del 40%.';
+                } else {
+                    result.innerHTML = `<strong>Resultado:</strong> Balance moderado. Configuración funcional estable. Puntos fuertes: Predictibilidad del servicio. Ajuste recomendado: Sube la validación emocional para un mayor impacto.`;
+                }
+            }, 400);
+        }
+    </script>
+</body>
+</html>
