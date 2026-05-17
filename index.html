@@ -1,172 +1,362 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetaLink - Inteligencia Social</title>
-    <style>
-        :root {
-            --bg: #0b111e;
-            --surface: #131c2e;
-            --accent: #00f2fe;
-            --text: #ffffff;
-            --muted: #64748b;
-        }
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .card {
-            background: var(--surface);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #1e293b;
-        }
-        h1, h2, h3 { color: var(--text); margin-top: 0; }
-        h1 { font-size: 24px; text-align: center; color: var(--accent); }
-        .choice-btn {
-            display: block;
-            width: 100%;
-            background: #1e293b;
-            color: #fff;
-            border: 1px solid #334155;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 8px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .choice-btn:hover, .choice-btn.selected {
-            border-color: var(--accent);
-            background: #1e293b;
-        }
-        .response-box {
-            background: #0f172a;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 4px solid var(--accent);
-            display: none;
-        }
-        .response-box.visible { display: block; }
-        .slider-group { margin-bottom: 15px; }
-        .slider-group label { display: block; font-size: 14px; margin-bottom: 5px; color: var(--muted); }
-        .slider-group input { width: 100%; }
-        .btn-analizar {
-            background: linear-gradient(90deg, #00f2fe, #4facfe);
-            color: #000;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .avatar-placeholder {
-            width: 80px;
-            height: 150px;
-            background: #1e293b;
-            margin: 0 auto 15px auto;
-            border-radius: 8px;
-            border: 2px dashed var(--accent);
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MetaLink — Inteligencia Social en Servicio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #060b12;
+  --surface: #0c1520;
+  --surface2: #111e2e;
+  --border: #1a2d45;
+  --accent: #00d4ff;
+  --accent2: #7b4fff;
+  --accent3: #ff6b6b;
+  --gold: #f5c842;
+  --green: #00e5a0;
+  --text: #e4edf7;
+  --muted: #5a7399;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:rgba(6,11,18,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:1.5rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;letter-spacing:0.05em;transition:color .2s;}
+.nav-links a:hover{color:var(--accent);}
+@media(max-width:600px){.nav-links{display:none;}}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 1.5rem 4rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 90% 60% at 50% 35%,rgba(0,212,255,0.07) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 85% 75%,rgba(123,79,255,0.06) 0%,transparent 70%);pointer-events:none;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:0.25;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 100%);}
+.hero-tag{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(0,212,255,0.3);color:var(--accent);font-size:0.7rem;letter-spacing:.15em;padding:.4rem 1rem;border-radius:100px;margin-bottom:2rem;background:rgba(0,212,255,0.05);animation:fadeUp .6s ease both;}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.5s ease infinite;}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,8vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:1.5rem;animation:fadeUp .7s ease .1s both;}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{max-width:520px;color:var(--muted);font-size:1rem;line-height:1.75;margin-bottom:2.5rem;animation:fadeUp .7s ease .2s both;}
+.hero-cta{display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s ease .3s both;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:.8rem 1.8rem;border-radius:8px;text-decoration:none;font-weight:600;font-size:.9rem;box-shadow:0 0 28px rgba(0,212,255,0.25);transition:transform .2s,box-shadow .2s;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(0,212,255,0.4);}
+.btn-ghost{border:1px solid var(--border);color:var(--text);padding:.8rem 1.8rem;border-radius:8px;text-decoration:none;font-weight:500;font-size:.9rem;transition:border-color .2s,color .2s;}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+
+.module{padding:5rem 1.5rem;}
+.container{max-width:1050px;margin:0 auto;}
+.module-alt{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.mod-label{color:var(--accent);font-size:.7rem;letter-spacing:.15em;font-weight:600;margin-bottom:.6rem;display:block;}
+.mod-title{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.5rem);font-weight:700;margin-bottom:.85rem;letter-spacing:-.02em;}
+.mod-desc{color:var(--muted);max-width:500px;line-height:1.75;margin-bottom:2.5rem;font-size:.95rem;}
+
+.sim-card{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:1.75rem;position:relative;overflow:hidden;}
+.sim-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.sim-scenario-text{font-size:1rem;line-height:1.65;margin-bottom:1.25rem;font-style:italic;}
+.sim-pills{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.pill{background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.2);color:var(--accent);padding:.25rem .75rem;border-radius:100px;font-size:.72rem;}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin-bottom:1.25rem;}
+.choice{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:.85rem 1rem;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;text-align:left;transition:all .2s;line-height:1.4;}
+.choice:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,255,0.05);}
+.choice.selected{border-color:var(--accent2);color:var(--accent2);background:rgba(123,79,255,0.1);}
+.ai-box{background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.15);border-radius:12px;padding:1.4rem;display:none;animation:fadeUp .4s ease both;}
+.ai-box.show{display:block;}
+.ai-box-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.85rem;}
+.ai-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.5s ease infinite;}
+.ai-label{font-size:.7rem;color:var(--accent);letter-spacing:.1em;font-weight:600;}
+.ai-text{color:var(--text);line-height:1.75;font-size:.92rem;}
+
+.bars-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;}
+.bar-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.4rem;}
+.bar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem;}
+.bar-name{font-weight:600;font-size:.9rem;}
+.bar-val{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;}
+.bar-track{height:7px;background:var(--border);border-radius:100px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:100px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.bar-desc{color:var(--muted);font-size:.78rem;margin-top:.55rem;}
+
+.err-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.25rem;}
+.err-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .2s;}
+.err-card:hover{border-color:var(--accent3);transform:translateY(-3px);}
+.err-head{padding:1.2rem 1.4rem;display:flex;align-items:center;gap:.75rem;}
+.err-icon{font-size:1.3rem;}
+.err-title{font-weight:600;font-size:.92rem;}
+.err-body{padding:0 1.4rem 1.4rem;display:none;}
+.err-body.open{display:block;animation:fadeUp .3s ease;}
+.err-tag{display:inline-block;margin-bottom:.6rem;margin-top:.85rem;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.25);color:var(--accent3);font-size:.7rem;padding:.22rem .6rem;border-radius:100px;}
+.err-sec{margin-top:.75rem;}
+.err-sec-label{color:var(--muted);font-size:.7rem;letter-spacing:.08em;margin-bottom:.25rem;font-weight:600;}
+.err-sec-text{font-size:.86rem;line-height:1.65;}
+
+.avatar-wrap{display:flex;gap:2.5rem;align-items:flex-start;flex-wrap:wrap;}
+.zone-info{flex:1;min-width:250px;background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:1.75rem;}
+.zone-title{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:.3rem;}
+.zone-subtitle{color:var(--accent);font-size:.78rem;margin-bottom:1.1rem;}
+.zone-modes{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.zone-mode{padding:.28rem .65rem;border-radius:100px;font-size:.74rem;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .2s;}
+.zone-mode.active{border-color:var(--accent2);color:var(--accent2);background:rgba(123,79,255,0.1);}
+.zone-content{font-size:.9rem;line-height:1.75;}
+.zone-placeholder{color:var(--muted);font-style:italic;}
+.zone-hotspot{cursor:pointer;transition:fill .2s;}
+.zone-hotspot:hover{fill:rgba(0,212,255,0.15)!important;}
+.zone-hotspot.active-zone{fill:rgba(0,212,255,0.2)!important;}
+.avatar-hint{margin-top:.85rem;color:var(--muted);font-size:.78rem;text-align:center;}
+
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;}
+@media(max-width:680px){.lab-grid{grid-template-columns:1fr;}}
+.lab-panel{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
+.lab-panel-title{font-weight:600;margin-bottom:.4rem;font-size:.95rem;}
+.lab-panel-desc{color:var(--muted);font-size:.8rem;margin-bottom:1.2rem;}
+.slider-row{margin-bottom:1rem;}
+.slider-label{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.4rem;}
+.slider-label span:last-child{color:var(--accent);font-weight:600;}
+input[type=range]{width:100%;-webkit-appearance:none;height:5px;background:var(--border);border-radius:100px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 8px rgba(0,212,255,0.5);}
+.lab-result{background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.12);border-radius:10px;padding:1.2rem;margin-top:.85rem;font-size:.88rem;line-height:1.75;min-height:90px;color:var(--muted);font-style:italic;}
+.lab-btn{width:100%;margin-top:.75rem;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;color:#fff;padding:.75rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:opacity .2s;}
+.lab-btn:hover{opacity:.85;}
+
+footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;text-align:center;color:var(--muted);font-size:.8rem;}
+footer strong{color:var(--accent);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:5px;}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>MetaLink</h1>
-        <p style="text-align:center; color:var(--muted); font-size:14px;">Inteligencia social aplicada al servicio</p>
 
-        <div class="card">
-            <h3>MÓDULO 03: Simulador Operativo</h3>
-            <p style="color:var(--muted); font-size:14px;">Selecciona una acción para interactuar:</p>
-            <button class="choice-btn" onclick="selectChoice(this, 'Hablar rápido y mostrar entusiasmo')">Hablar rápido y mostrar entusiasmo</button>
-            <button class="choice-btn" onclick="selectChoice(this, 'Dar espacio, no interrumpir')">Dar espacio, no interrumpir</button>
-            <button class="choice-btn" onclick="selectChoice(this, 'Hacer una broma ligera para romper el hielo')">Hacer una broma ligera para romper el hielo</button>
-            <button class="choice-btn" onclick="selectChoice(this, 'Preguntar directamente cómo estuvo su día')">Preguntar directamente cómo estuvo su día</button>
-            <button class="choice-btn" onclick="selectChoice(this, 'Reflejar su energía con calma y movimientos suaves')">Reflejar su energía con calma y movimientos suaves</button>
+<nav>
+  <div class="nav-logo">MetaLink</div>
+  <ul class="nav-links">
+    <li><a href="#sim">Simulador</a></li>
+    <li><a href="#rapport">Rapport</a></li>
+    <li><a href="#errores">Errores</a></li>
+    <li><a href="#mapa">Mapa</a></li>
+    <li><a href="#lab">Laboratorio</a></li>
+  </ul>
+</nav>
 
-            <div id="aiResponse" class="response-box">
-                <div id="aiText"></div>
-            </div>
-        </div>
+<section class="hero">
+  <div class="hero-grid"></div>
+  <span class="hero-tag">METACOMUNICACIÓN · NEUROPSICOLOGÍA · SERVICIO</span>
+  <h1>La <em>inteligencia invisible</em><br/>detrás del servicio</h1>
+  <p>Plataforma de entrenamiento interactivo para dominar la sincronización emocional, el rapport y el lenguaje no verbal en restaurante.</p>
+  <div class="hero-cta">
+    <a href="#sim" class="btn-primary">Comenzar simulación</a>
+    <a href="#mapa" class="btn-ghost">Ver mapa corporal</a>
+  </div>
+</section>
 
-        <div class="card" style="text-align: center;">
-            <h3>MÓDULO 04: Mapa de lenguaje no verbal</h3>
-            <div class="avatar-placeholder"></div>
-            <p style="font-size:14px;">Cuerpo Humano / Simulador Activo</p>
-        </div>
-
-        <div class="card">
-            <h3>MÓDULO 05: Laboratorio de metacomunicación</h3>
-            <div class="slider-group">
-                <label>Velocidad del habla</label>
-                <input type="range" id="sl-velocidad" min="0" max="100" value="50">
-            </div>
-            <div class="slider-group">
-                <label>Nivel de silencio</label>
-                <input type="range" id="sl-silencio" min="0" max="100" value="30">
-            </div>
-            <div class="slider-group">
-                <label>Validación emocional</label>
-                <input type="range" id="sl-validacion" min="0" max="100" value="60">
-            </div>
-            <div class="slider-group">
-                <label>Escucha activa</label>
-                <input type="range" id="sl-escucha" min="0" max="100" value="70">
-            </div>
-            <button class="btn-analizar" onclick="analyzeLab()">Analizar combinación con IA</button>
-
-            <div id="labResult" class="response-box" style="display:block; margin-top:15px; border-color:#4facfe;">
-                Mueve los controles y presiona Analizar para ver el balance neuropsicológico.
-            </div>
-        </div>
+<section class="module module-alt" id="sim">
+  <div class="container">
+    <span class="mod-label">MÓDULO 01</span>
+    <h2 class="mod-title">Simulador de conversación</h2>
+    <p class="mod-desc">Elige una respuesta ante el escenario. La IA analiza qué transmite cada acción neuropsicológicamente.</p>
+    <div class="sim-card">
+      <p class="sim-scenario-text">🧍 Un cliente llega solo, serio. Evita el contacto visual, deja el teléfono sobre la mesa y no responde al saludo inicial.</p>
+      <div class="sim-pills">
+        <span class="pill">📍 Mesa para uno</span>
+        <span class="pill">😶 Sin contacto visual</span>
+        <span class="pill">📱 Teléfono en mesa</span>
+        <span class="pill">🔇 Sin respuesta</span>
+      </div>
+      <div class="choices">
+        <button class="choice" onclick="pick(this,'Hablar rápido y mostrar entusiasmo')">⚡ Hablar rápido y mostrar entusiasmo</button>
+        <button class="choice" onclick="pick(this,'Dar espacio, no interrumpir')">🌬️ Dar espacio, no interrumpir</button>
+        <button class="choice" onclick="pick(this,'Hacer broma ligera para romper el hielo')">😄 Hacer broma ligera</button>
+        <button class="choice" onclick="pick(this,'Preguntar directamente cómo estuvo su día')">🗣️ Preguntar directamente</button>
+        <button class="choice" onclick="pick(this,'Reflejar su energía con calma y movimientos suaves')">🌊 Reflejar energía con calma</button>
+      </div>
+      <div class="ai-box" id="aiBox">
+        <div class="ai-box-head"><div class="ai-dot"></div><span class="ai-label">ANÁLISIS · METACOMUNICACIÓN</span></div>
+        <div class="ai-text" id="aiText"></div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <script>
-        function selectChoice(btn, choice) {
-            document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            const resp = document.getElementById('aiResponse');
-            const text = document.getElementById('aiText');
-            resp.classList.add('visible');
-            text.innerHTML = 'Analizando metacomunicación...';
+<section class="module" id="rapport">
+  <div class="container">
+    <span class="mod-label">MÓDULO 02</span>
+    <h2 class="mod-title">Medidor de sincronización</h2>
+    <p class="mod-desc">El estado emocional de la interacción en tiempo real. Cambia según tus decisiones.</p>
+    <div class="bars-wrap" id="barsWrap"></div>
+  </div>
+</section>
 
-            const respuestas = {
-                'Hablar rápido y mostrar entusiasmo': '1. <strong>Qué transmite:</strong> Energía invasiva.<br/>2. <strong>Efecto emocional:</strong> Presión social, aumentando el deseo de aislamiento del cliente.<br/>3. <strong>Alternativa:</strong> Adoptar un tono de voz bajo y pausado.',
-                'Dar espacio, no interrumpir': '1. <strong>Qué transmite:</strong> Respeto absoluto por el estado introspectivo del comensal.<br/>2. <strong>Efecto emocional:</strong> Disminuye la alerta al no percibir demandas en el entorno.<br/>3. <strong>Acción:</strong> Retirarse a una distancia prudente.',
-                'Hacer una broma ligera para romper el hielo': '1. <strong>Qué transmite:</strong> Desconexión empática o intento forzado.<br/>2. <strong>Efecto emocional:</strong> Intrusión molesta en su espacio mental.<br/>3. <strong>Alternativa:</strong> Mantener una cortesía neutra.',
-                'Preguntar directamente cómo estuvo su día': '1. <strong>Qué transmite:</strong> Demanda de interacción verbal directa.<br/>2. <strong>Efecto emocional:</strong> Mecanismos de defensa ante explicaciones no deseadas.<br/>3. <strong>Alternativa:</strong> Limitarse al protocolo básico con suavidad.',
-                'Reflejar su energía con calma y movimientos suaves': '1. <strong>Qué transmite:</strong> Rapport subcortical puro. Sincronización motriz.<br/>2. <strong>Efecto emocional:</strong> El sistema límbico detecta seguridad y co-regulación.<br/>3. <strong>Acción:</strong> Movimientos fluidos y volumen bajo.'
-            };
-            setTimeout(() => { text.innerHTML = respuestas[choice]; }, 300);
-        }
+<section class="module module-alt" id="errores">
+  <div class="container">
+    <span class="mod-label">MÓDULO 03</span>
+    <h2 class="mod-title">Errores invisibles</h2>
+    <p class="mod-desc">Patrones que sabotean la conexión sin que lo notes. Toca para explorar cada uno.</p>
+    <div class="err-grid" id="errGrid"></div>
+  </div>
+</section>
 
-        function analyzeLab() {
-            const velocidad = document.getElementById('sl-velocidad').value;
-            const silencio = document.getElementById('sl-silencio').value;
-            const result = document.getElementById('labResult');
-            result.innerHTML = 'Analizando combinación neuropsicológica...';
+<section class="module" id="mapa">
+  <div class="container">
+    <span class="mod-label">MÓDULO 04</span>
+    <h2 class="mod-title">Mapa de lenguaje no verbal</h2>
+    <p class="mod-desc">Selecciona una zona corporal y el modo para entender qué comunica en el servicio.</p>
+    <div class="avatar-wrap">
+      <div style="flex-shrink:0;">
+        <svg width="200" height="400" viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="58" rx="36" ry="40" fill="#0c1520" stroke="#1a2d45" stroke-width="1.5"/>
+          <rect x="64" y="96" width="72" height="108" rx="14" fill="#0c1520" stroke="#1a2d45" stroke-width="1.5"/>
+          <rect x="30" y="100" width="32" height="82" rx="12" fill="#0c1520" stroke="#1a2d45" stroke-width="1.5"/>
+          <rect x="138" y="100" width="32" height="82" rx="12" fill="#0c1520" stroke="#1a2d45" stroke-width="1.5"/>
+          <rect x="68" y="202" width="28" height="98" rx="12" fill="#0c1520" stroke="#1a2d45" stroke-width="1.5"/>
+          <rect x="104" y="202" width="28" height="98" rx="12" fill="#0c1520" stroke="#1a2d45" stroke-width="1.5"/>
+          <rect x="68" y="292" width="28" height="38" rx="8" fill="#0c1520" stroke="#1a2d45" stroke-width="1.5"/>
+          <rect x="104" y="292" width="28" height="38" rx="8" fill="#0c1520" stroke="#1a2d45" stroke-width="1.5"/>
+          <ellipse cx="89" cy="53" rx="4.5" ry="5" fill="#060b12" stroke="#00d4ff" stroke-width="1"/>
+          <ellipse cx="111" cy="53" rx="4.5" ry="5" fill="#060b12" stroke="#00d4ff" stroke-width="1"/>
+          <ellipse class="zone-hotspot" cx="100" cy="53" rx="26" ry="18" fill="transparent" stroke="#00d4ff" stroke-width="1" stroke-dasharray="3 3" onclick="selectZone('ojos')" id="hz-ojos"/>
+          <ellipse class="zone-hotspot" cx="30" cy="168" rx="15" ry="16" fill="transparent" stroke="#00d4ff" stroke-width="1" stroke-dasharray="3 3" onclick="selectZone('manos')" id="hz-manos-l"/>
+          <ellipse class="zone-hotspot" cx="170" cy="168" rx="15" ry="16" fill="transparent" stroke="#00d4ff" stroke-width="1" stroke-dasharray="3 3" onclick="selectZone('manos')" id="hz-manos-r"/>
+          <rect class="zone-hotspot" x="64" y="96" width="72" height="108" rx="14" fill="transparent" stroke="#00d4ff" stroke-width="1" stroke-dasharray="3 3" onclick="selectZone('postura')" id="hz-postura"/>
+          <rect class="zone-hotspot" x="64" y="202" width="68" height="130" rx="12" fill="transparent" stroke="#00d4ff" stroke-width="1" stroke-dasharray="3 3" onclick="selectZone('distancia')" id="hz-distancia"/>
+          <text x="128" y="42" fill="#00d4ff" font-size="8" font-family="sans-serif">OJOS</text>
+          <text x="148" y="155" fill="#00d4ff" font-size="8" font-family="sans-serif">MANOS</text>
+          <text x="140" y="152" fill="#00d4ff" font-size="8" font-family="sans-serif" opacity="0" id="lbl-postura">POSTURA</text>
+          <text x="136" y="270" fill="#00d4ff" font-size="8" font-family="sans-serif" opacity="0" id="lbl-distancia">DISTANCIA</text>
+        </svg>
+        <div class="avatar-hint" id="avatarHint">Toca una zona del cuerpo ↑</div>
+      </div>
+      <div class="zone-info">
+        <div class="zone-title" id="zoneTitle">Selecciona una zona</div>
+        <div class="zone-subtitle" id="zoneSub">Toca el avatar para explorar</div>
+        <div class="zone-modes" id="zoneModes"></div>
+        <div class="zone-content" id="zoneContent"><p class="zone-placeholder">Cada zona corporal comunica información emocional específica. Explóralas para entender el lenguaje no verbal en el servicio.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            setTimeout(() => {
-                if (velocidad > 70 && silencio < 30) {
-                    result.innerHTML = '<strong>Resultado:</strong> Alta velocidad y pocos silencios generan sobrecarga. El comensal se mantendrá en alerta, dificultando el rapport. Ajuste recomendado: Incrementa el silencio por encima del 40%.';
-                } else {
-                    result.innerHTML = `<strong>Resultado:</strong> Balance moderado. Configuración funcional estable. Puntos fuertes: Predictibilidad del servicio. Ajuste recomendado: Sube la validación emocional para un mayor impacto.`;
-                }
-            }, 400);
-        }
-    </script>
+<section class="module module-alt" id="lab">
+  <div class="container">
+    <span class="mod-label">MÓDULO 05</span>
+    <h2 class="mod-title">Laboratorio de metacomunicación</h2>
+    <p class="mod-desc">Ajusta los parámetros y analiza el efecto combinado con IA.</p>
+    <div class="lab-grid">
+      <div class="lab-panel">
+        <div class="lab-panel-title">⚙️ Parámetros de interacción</div>
+        <div class="lab-panel-desc">Mueve los controles y presiona Analizar.</div>
+        <div class="slider-row"><div class="slider-label"><span>Velocidad del habla</span><span id="v-vel">50%</span></div><input type="range" min="0" max="100" value="50" oninput="sv('vel',this.value)"/></div>
+        <div class="slider-row"><div class="slider-label"><span>Nivel de silencio</span><span id="v-sil">30%</span></div><input type="range" min="0" max="100" value="30" oninput="sv('sil',this.value)"/></div>
+        <div class="slider-row"><div class="slider-label"><span>Validación emocional</span><span id="v-val">60%</span></div><input type="range" min="0" max="100" value="60" oninput="sv('val',this.value)"/></div>
+        <div class="slider-row"><div class="slider-label"><span>Escucha activa</span><span id="v-esc">70%</span></div><input type="range" min="0" max="100" value="70" oninput="sv('esc',this.value)"/></div>
+        <div class="slider-row"><div class="slider-label"><span>Espejo emocional</span><span id="v-esp">40%</span></div><input type="range" min="0" max="100" value="40" oninput="sv('esp',this.value)"/></div>
+        <button class="lab-btn" onclick="analyzeLab()">Analizar combinación con IA</button>
+      </div>
+      <div class="lab-panel">
+        <div class="lab-panel-title">🧠 Análisis de la IA</div>
+        <div class="lab-panel-desc">Resultado neuropsicológico de la combinación actual.</div>
+        <div class="lab-result" id="labResult">Ajusta los parámetros y presiona "Analizar" para ver el análisis...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>MetaLink</strong> — Inteligencia social aplicada al servicio de restaurante.<br/>
+  Metacomunicación · Neuropsicología interpersonal · Co-regulación emocional
+</footer>
+
+<script>
+const S={rapport:50,confianza:45,seguridad:55,tension:30,carga:40};
+const bars=[
+  {k:'rapport',label:'Rapport',color:'#00d4ff',desc:'Calidad de la conexión interpersonal'},
+  {k:'confianza',label:'Confianza',color:'#7b4fff',desc:'Seguridad percibida por el cliente'},
+  {k:'seguridad',label:'Seguridad',color:'#00e5a0',desc:'Co-regulación del sistema nervioso'},
+  {k:'tension',label:'Tensión',color:'#ff6b6b',desc:'Activación del sistema de alerta'},
+  {k:'carga',label:'Carga emocional',color:'#f5c842',desc:'Peso emocional acumulado'},
+];
+function renderBars(){
+  document.getElementById('barsWrap').innerHTML=bars.map(b=>`<div class="bar-card"><div class="bar-head"><span class="bar-name">${b.label}</span><span class="bar-val" id="bv-${b.k}" style="color:${b.color}">${S[b.k]}%</span></div><div class="bar-track"><div class="bar-fill" id="bf-${b.k}" style="width:${S[b.k]}%;background:${b.color}"></div></div><div class="bar-desc">${b.desc}</div></div>`).join('');
+}
+function updateBars(d){for(const[k,v]of Object.entries(d)){S[k]=Math.max(0,Math.min(100,S[k]+v));const f=document.getElementById('bf-'+k),val=document.getElementById('bv-'+k);if(f)f.style.width=S[k]+'%';if(val)val.textContent=S[k]+'%';}}
+renderBars();
+
+const deltas={
+  'Hablar rápido y mostrar entusiasmo':{rapport:-8,confianza:-10,seguridad:-12,tension:15,carga:10},
+  'Dar espacio, no interrumpir':{rapport:12,confianza:10,seguridad:15,tension:-10,carga:-8},
+  'Hacer broma ligera para romper el hielo':{rapport:-5,confianza:-8,seguridad:-5,tension:5,carga:5},
+  'Preguntar directamente cómo estuvo su día':{rapport:-3,confianza:-5,seguridad:-5,tension:10,carga:8},
+  'Reflejar su energía con calma y movimientos suaves':{rapport:15,confianza:12,seguridad:18,tension:-14,carga:-10},
+};
+
+async function pick(btn,choice){
+  document.querySelectorAll('.choice').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateBars(deltas[choice]||{});
+  const box=document.getElementById('aiBox'),txt=document.getElementById('aiText');
+  box.classList.add('show');
+  txt.innerHTML='<span class="spinner"></span><em style="color:var(--muted)">Analizando metacomunicación...</em>';
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:`Eres experto en metacomunicación y neuropsicología interpersonal aplicada al servicio en restaurante.\n\nEscenario: cliente llega solo, serio, evita contacto visual, deja teléfono en mesa, no responde al saludo.\n\nEl mesero elige: "${choice}"\n\nResponde en español con estas 4 secciones (1-2 oraciones cada una):\n1. **Qué transmite:** comunicación no verbal de esta acción.\n2. **Interpretación emocional:** cómo lo procesa el cliente neurológicamente.\n3. **Error común:** malentendido frecuente.\n4. **Alternativa más efectiva:** qué haría un experto.\n\nSé específico y práctico.`}]})});
+    const d=await r.json();
+    txt.innerHTML=(d.content?.map(i=>i.text||'').join('')||'Sin respuesta.').replace(/\*\*(.*?)\*\*/g,'<strong style="color:var(--accent)">$1</strong>').replace(/\n/g,'<br/>');
+  }catch(e){
+    txt.innerHTML='<span style="color:var(--accent3)">⚠️ Para activar el análisis con IA, configura el Worker de Cloudflare.</span>';
+  }
+}
+
+const errores=[
+  {icon:'⏸️',title:'Interrumpir demasiado',tag:'Ruptura de rapport',neuro:'Activa el sistema de amenaza, generando cortisol y cerrando la disposición a comunicarse.',percepcion:'El cliente percibe invalidación: "mi mensaje no importa".',fix:'Espera 1.5 segundos después de que el cliente termina antes de responder.'},
+  {icon:'😬',title:'Sonreír en momentos incorrectos',tag:'Incongruencia emocional',neuro:'El sistema límbico detecta la incongruencia automáticamente, generando desconfianza subcortical.',percepcion:'La sonrisa fuera de contexto se percibe como falsedad o indiferencia disfrazada.',fix:'Sincroniza la expresión con el tono emocional del cliente.'},
+  {icon:'🗣️',title:'Hablar demasiado de uno mismo',tag:'Robo de foco',neuro:'Rompe la activación del circuito de mentalización; el cliente siente que no es visto.',percepcion:'Genera incomodidad por falta de reciprocidad: "esto es un monólogo".',fix:'Regla 80/20: 80% escucha activa, 20% aporte relevante al cliente.'},
+  {icon:'🚫',title:'Invalidar emociones sin querer',tag:'Microagresión emocional',neuro:'Bloquea la oxitocina y activa el rechazo social a nivel del ínsula anterior.',percepcion:'Frases como "¡no es para tanto!" activan la respuesta de amenaza social.',fix:'Valida antes de resolver: "Entiendo que eso fue incómodo, permítame resolverlo."'},
+  {icon:'📢',title:'Usar tono autoritario',tag:'Asimetría de poder',neuro:'Activa el sistema de jerarquía. El cliente puede someterse o resistir, nunca conectar.',percepcion:'Se siente como presión, no como servicio. Genera resentimiento silencioso.',fix:'Usa entonación suave y frases de elección: "¿Preferiría…?" en lugar de "Debe…"'},
+  {icon:'🧍',title:'Invadir espacio personal',tag:'Violación proxémica',neuro:'A menos de 60cm sin rapport, el amígdala dispara alerta de intrusión automáticamente.',percepcion:'El cliente se encoge, tensa hombros o retrocede: señales de incomodidad activa.',fix:'Mantén 90-120cm. Reduce distancia solo cuando hay señales de apertura.'},
+  {icon:'🔍',title:'"Sobreleer" señales del cliente',tag:'Proyección emocional',neuro:'Confunde activación neutral con negativa, generando respuestas desproporcionadas.',percepcion:'El cliente siente que lo tratan como frágil o conflictivo sin razón.',fix:'Observa 15-20 segundos antes de interpretar. Valida con una pregunta abierta.'},
+];
+document.getElementById('errGrid').innerHTML=errores.map((e,i)=>`<div class="err-card" onclick="toggleErr(${i})"><div class="err-head"><span class="err-icon">${e.icon}</span><span class="err-title">${e.title}</span></div><div class="err-body" id="eb-${i}"><span class="err-tag">${e.tag}</span><div class="err-sec"><div class="err-sec-label">NEUROBIOLOGÍA</div><div class="err-sec-text">${e.neuro}</div></div><div class="err-sec"><div class="err-sec-label">PERCEPCIÓN</div><div class="err-sec-text">${e.percepcion}</div></div><div class="err-sec"><div class="err-sec-label" style="color:var(--green)">CORRECCIÓN</div><div class="err-sec-text" style="color:var(--green)">${e.fix}</div></div></div></div>`).join('');
+function toggleErr(i){document.getElementById('eb-'+i).classList.toggle('open');}
+
+const zones={
+  ojos:{title:'Ojos y mirada',sub:'Sistema de contacto visual',modes:['Anfitrión','Cliente','Tensión','Interés','Incomodidad'],content:{'Anfitrión':'El anfitrión ideal mantiene contacto visual suave (70% del tiempo), con pausas naturales hacia abajo. Mirar directamente sin parpadear genera presión; mirar hacia arriba transmite falta de sinceridad.','Cliente':'Si el cliente evita el contacto visual, está procesando algo, siente incomodidad social o está en modo introspección. No es falta de respeto; es señal de que necesita espacio.','Tensión':'En situaciones de tensión, los ojos se abren más y el parpadeo disminuye. Responde con voz suave y bajando tu propio nivel de activación.','Interés':'Pupilas levemente dilatadas, mirada directa pero blanda, ligera inclinación de cabeza. Son señales de apertura y engagement genuino.','Incomodidad':'Mirada lateral repetida, parpadeo acelerado o cierre frecuente de ojos son señales de activación del sistema de amenaza. Reduce estímulos y da espacio.'}},
+  manos:{title:'Manos y gestos',sub:'Comunicación kinésica',modes:['Anfitrión','Cliente','Tensión','Interés','Incomodidad'],content:{'Anfitrión':'Gestos abiertos con palmas visibles generan confianza automática (señal evolutiva de no amenaza). Mantén las manos a la vista, nunca detrás de la espalda al hablar.','Cliente':'Manos sobre la mesa = apertura. Manos escondidas = cierre. Manos tensas o dedos entrelazados con presión = estrés activo.','Tensión':'Manos cerradas en puño o frotándose indican autoregulación emocional bajo tensión. Da espacio y resuelve con calma.','Interés':'El cliente comienza a gesticular o inclina las manos hacia ti: está entrando en modo conversacional activo.','Incomodidad':'Tocarse el cuello, frotarse las manos o jugar con objetos son gestos de autoconsuelo. Algo genera malestar.'}},
+  postura:{title:'Postura y torso',sub:'Orientación corporal',modes:['Anfitrión','Cliente','Tensión','Interés','Incomodidad'],content:{'Anfitrión':'Postura erecta pero relajada, torso levemente inclinado hacia el cliente (10-15°) comunica atención sin invasión. Hombros relajados indican calma al sistema nervioso del otro.','Cliente':'Torso abierto hacia ti = apertura. Torso cerrado o girado = reserva. Si el cliente rota hacia la salida, algo lo está incomodando.','Tensión':'Hombros elevados, cuello tenso y espalda rígida son señales de activación simpática. Responde con postura abierta para invitar a la co-regulación.','Interés':'El cliente se inclina hacia adelante con el torso orientado hacia ti. Es la postura de engagement genuino.','Incomodidad':'Brazos cruzados, torso girado o cuerpo encogido indican protección automática ante algo que no se siente seguro.'}},
+  distancia:{title:'Distancia y espacio',sub:'Proxémica y territorio',modes:['Anfitrión','Cliente','Tensión','Interés','Incomodidad'],content:{'Anfitrión':'La distancia óptima de servicio es 90-120cm (zona social). A menos de 60cm sin rapport previo, el amígdala activa una alerta de intrusión automática.','Cliente':'Cada cliente tiene su burbuja proxémica única. Observa si se inclina o retrocede cuando te acercas: son calibradores instantáneos.','Tensión':'En situaciones tensas, mantén tu posición y distancia. Moverla involuntariamente amplifica la tensión existente.','Interés':'Cuando el cliente reduce la distancia voluntariamente, es señal de confianza y apertura establecidas.','Incomodidad':'Retroceder o crear barreras con objetos son respuestas proxémicas de protección. Aumenta la distancia y ofrece control al cliente.'}}
+};
+let curZone=null,curMode={};
+function selectZone(z){
+  curZone=z;
+  if(!curMode[z])curMode[z]=zones[z].modes[0];
+  document.querySelectorAll('.zone-hotspot').forEach(h=>h.classList.remove('active-zone'));
+  const el=document.getElementById('hz-'+z)||document.getElementById('hz-'+z+'-l');
+  if(el)el.classList.add('active-zone');
+  document.getElementById('avatarHint').style.opacity='0';
+  renderZone();
+}
+function renderZone(){
+  if(!curZone)return;
+  const z=zones[curZone],m=curMode[curZone];
+  document.getElementById('zoneTitle').textContent=z.title;
+  document.getElementById('zoneSub').textContent=z.sub;
+  document.getElementById('zoneModes').innerHTML=z.modes.map(md=>`<span class="zone-mode ${md===m?'active':''}" onclick="setMode('${md}')">${md}</span>`).join('');
+  document.getElementById('zoneContent').innerHTML=`<p>${z.content[m]}</p>`;
+}
+function setMode(m){if(!curZone)return;curMode[curZone]=m;renderZone();}
+
+const labVals={vel:50,sil:30,val:60,esc:70,esp:40};
+function sv(k,v){labVals[k]=v;document.getElementById('v-'+k).textContent=v+'%';}
+async function analyzeLab(){
+  const r=document.getElementById('labResult');
+  r.innerHTML='<span class="spinner"></span> Analizando...';
+  const p=`Eres experto en metacomunicación y servicio en restaurante.\n\nParámetros del mesero:\n- Velocidad del habla: ${labVals.vel}%\n- Nivel de silencio: ${labVals.sil}%\n- Validación emocional: ${labVals.val}%\n- Escucha activa: ${labVals.esc}%\n- Espejo emocional: ${labVals.esp}%\n\nEn 3-4 oraciones en español: qué genera esta combinación en el cliente neurológicamente, cuál es el punto más fuerte, cuál el más débil, y una recomendación concreta.`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:p}]})});
+    const d=await res.json();
+    r.innerHTML=(d.content?.map(i=>i.text||'').join('')||'').replace(/\*\*(.*?)\*\*/g,'<strong style="color:var(--accent)">$1</strong>').replace(/\n/g,'<br/>');
+  }catch(e){
+    r.innerHTML='<span style="color:var(--accent3)">⚠️ Configura el Worker de Cloudflare para activar el análisis con IA.</span>';
+  }
+}
+</script>
 </body>
 </html>
-
-
